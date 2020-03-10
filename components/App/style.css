@@ -1,0 +1,166 @@
+body::-webkit-scrollbar {
+   width: 0px;
+   /* Remove scrollbar space */
+   background: transparent;
+   /* Optional: just make scrollbar invisible */
+}
+
+.bg-purple {
+   background-color: rgb(65, 42, 52);
+}
+
+.bg-gray {
+   background-color: rgb(26, 26, 26);
+   color: white;
+}
+
+.bg-black {
+   background-color: black;
+   /* color: white; */
+}
+
+.bg-gray-light {
+   background-color: rgb(55, 55, 55);
+   color: white;
+}
+
+html {
+   font-size: calc(.5rem + 1vw);
+}
+
+/* .color-white {
+   color: white;
+} */
+
+/* Inactive tab */
+/* .dark-tab>a {
+   background-color: black;
+   color: white;
+   border: white;
+}
+
+.dark-tab>a:hover {
+   background-color: black;
+   background-color: rgba(125, 125, 125, 0.215);
+   border: 1px solid white;
+} */
+
+
+/* .list-group-item:first-child {
+   border-top-left-radius: 0px;
+   border-top-right-radius: 0px;
+} */
+
+/* .list-group-item:first-child {
+   border-top: 0px;
+} */
+
+.no-top-border:first-child {
+   border-top-left-radius: 0px;
+   border-top-right-radius: 0px;
+   border-top: 0px;
+}
+
+.no-top-border {
+   border-top: 0px;
+}
+
+/* Extra small devices (phones, less than 768px) */
+/* No media query since this is the default in Bootstrap */
+
+
+.xs-visible {
+   display: block;
+}
+
+.sm-visible {
+   display: none;
+}
+
+.md-visible {
+   display: none;
+}
+
+.lg-visible {
+   display: none;
+}
+
+
+@media (min-width: 576px) {
+   .xs-visible {
+      display: none;
+   }
+
+
+   .sm-visible {
+      display: flex;
+   }
+
+   .md-visible {
+      display: flex;
+   }
+
+   .lg-visible {
+      display: flex;
+   }
+}
+
+/* Small devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+   .xs-visible {
+      display: none;
+   }
+
+   .sm-visible {
+      display: flex;
+   }
+
+   /*
+   .md-visible {
+      display: flex;
+   }
+
+   .lg-visible {
+      display: flex;
+   } */
+}
+
+/* Medium devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+   .xs-visible {
+      display: none;
+   }
+
+   .sm-visible {
+      display: flex;
+   }
+
+   /*
+   .md-visible {
+      display: flex;
+   }
+
+   .lg-visible {
+      display: flex;
+   } */
+}
+
+/* Large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+   .xs-visible {
+      display: none;
+   }
+
+   .sm-visible {
+      display: flex;
+   }
+
+   /*
+   .md-visible {
+      display: none;
+   }
+
+   .lg-visible {
+      display: flex;
+   } */
+}
