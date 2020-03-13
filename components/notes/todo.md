@@ -41,20 +41,13 @@
 
 ### New User Sign Up:
 1. We will want to find a way for when someone signs up to either just allow them to have access but no program until I send it over or some other solution!
-
 1. I'm thinking of the best way to do the new user sign up. Like I'm not sure how much sense it makes to allow a user that hasn't paid to create an account, I feel like that could cause some confusion? Would like to know your thoughts.
-
-### New Day
-1. When Creating a "New Day" on a new program I'd like the default day to be in the set up of a normal day. Currently it is only like 4 exercises and the set up is goofed up which forces me to have to add a bunch of stuff everytime
 
 ### Chat:
 
 ### Before Photos:
 1. This would also be huge on the Tracking page to have the ability for them to upload their photos so it keeps everything in one spot
 
-### Admin page
-
-Name of Program: So when I give them a default program, I'd like to be able to make small edits to that default program and then name it something else before I send it to them. Currently it looks as if I can only send the defaults with no edits and the same name every time
 
 As for information to store, name and birthday and sign up date maybe? Not super important though as they sign up through paypal right now which gives all of that aswell.
 

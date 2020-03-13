@@ -150,9 +150,9 @@ const DayTable = ({ day, dayTitle, updateSaveTracking }) => {
                   <Col xs={12} sm={1}>Link</Col>
                   <Col xs={12} sm={1}>Sets</Col>
                   <Col xs={12} sm={2}>Reps</Col>
-                  <Col xs={12} sm={1}>Tempo</Col>
+                  <Col xs={12} sm={2}>Tempo</Col>
                   <Col xs={12} sm={1}>Rest</Col>
-                  <Col xs={12} sm={2}>Track</Col>
+                  <Col xs={12} sm={1}>Track</Col>
                </Row>
             </ ListGroup.Item >
 
