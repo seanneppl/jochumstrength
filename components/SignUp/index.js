@@ -72,7 +72,8 @@ const SignUpFormBase = ({firebase, history}) => {
                email,
                ADMIN: isAdmin,
                createdAt: timestamp,
-               programDate: timestamp,
+               // programDate: timestamp,
+               programDate: null,
             });
             return authUser.user.uid;
          })
@@ -84,7 +85,7 @@ const SignUpFormBase = ({firebase, history}) => {
             firebase.workouts(uid).push(programData)
                .then((snap) => {
                   const key = snap.key;
-                  firebase.workoutIds(uid).update({ [key]: { title: "Your first program!", createdAt: timestamp } });
+                  firebase.workoutIds(uid).update({ [key]: { title: "Default", createdAt: timestamp, active: false } });
                });
          })
          .then(() => {
