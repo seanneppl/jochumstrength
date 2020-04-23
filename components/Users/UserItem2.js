@@ -1,4 +1,4 @@
-import React, { PureComponent, Component } from "react";
+import React, { PureComponent } from "react";
 
 // import moment from 'moment';
 
@@ -6,7 +6,7 @@ import { withFirebase } from '../Firebase';
 
 import * as ROUTES from '../../constants/routes';
 
-import { withRouter, Switch, Route, Link } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import WorkoutList from '../WorkoutList';
 
 import Tabs from 'react-bootstrap/Tabs'
@@ -76,8 +76,8 @@ class UserItemBase extends PureComponent {
 
    render() {
       const { user, loading } = this.state;
-      const { isMobile } = this.props;
-      const path = isMobile ? ROUTES.ADMIN_MOBILE : ROUTES.ADMIN;
+      // const { isMobile } = this.props;
+      // const path = isMobile ? ROUTES.ADMIN_MOBILE : ROUTES.ADMIN;
 
       return (
          <div>
@@ -85,34 +85,34 @@ class UserItemBase extends PureComponent {
             {user && (
                <>
                   {/* This is close. Doesn't work out mobile */}
-                  <nav className="dark-tab user-info nav nav-tabs nav-fill" role="tablist" style={{ marginTop: "12px", marginBottom: "12px" }}>
+                  {/* <nav className="dark-tab user-info nav nav-tabs nav-fill" role="tablist" style={{ marginTop: "12px", marginBottom: "12px" }}>
                      <Link role="tab" data-rb-event-key="profile" aria-selected="false" className="nav-item nav-link" tabIndex="-1" to={`${ROUTES.ADMIN}/${user.uid}/profile`}>Profile</Link>
                      <Link role="tab" data-rb-event-key="workouts" aria-selected="false" className="nav-item nav-link" tabIndex="-1" to={`${ROUTES.ADMIN}/${user.uid}/workouts`}>Programs</Link>
                      <Link role="tab" data-rb-event-key="messages" aria-selected="true" className="nav-item nav-link" to={`${ROUTES.ADMIN}/${user.uid}/messages`}>Messages</Link>
-                  </nav>
+                  </nav> */}
 
                   {/* <Tabs style={{ marginTop: "12px", marginBottom: "12px" }} fill className="dark-tab user-info"> */}
-                  <Switch>
+                  {/* <Switch>
                      <Route path={ROUTES.ADMIN_DETAILS_PROFILE} component={() => <Profile user={user} loading={loading} onSendPasswordResetEmail={this.onSendPasswordResetEmail} />} />
                      <Route path={ROUTES.ADMIN_DETAILS_WORKOUTS} component={() => <WorkoutList key={user.uid} uid={user.uid} />} />
                      <Route path={ROUTES.ADMIN_DETAILS_MESSAGES} component={() => <ChatRoom key={user.uid} user={user} />} />
-                  </Switch>
+                  </Switch> */}
                   {/* </Tabs> */}
 
-                  {/* <Tabs style={{ marginTop: "12px", marginBottom: "12px" }} fill defaultActiveKey="messages" className="dark-tab user-info">
+                  <Tabs fill defaultActiveKey="messages" className="dark-tab user-info">
                      <Tab eventKey="profile" title="Profile">
                         <Profile user={user} loading={loading} onSendPasswordResetEmail={this.onSendPasswordResetEmail} />
                      </Tab>
                      <Tab eventKey="workouts" title="Programs">
-                        // <Switch>
+                        {/* // <Switch>
                         //    <Route exact path={ROUTES.ADMIN_DETAILS} component={WorkoutList} />
-                        // </Switch>
+                        // </Switch> */}
                         <WorkoutList key={user.uid} uid={user.uid} />
                      </Tab>
                      <Tab eventKey="messages" title="Messages">
                         <ChatRoom key={user.uid} user={user} />
                      </Tab>
-                  </Tabs> */}
+                  </Tabs>
                </>
             )}
          </div>
