@@ -16,9 +16,6 @@ import ExerciseRow from './ExerciseRow';
 
 import "./UserTable.css";
 
-// import armGuyImg from '../../images/arm-guy.jpg'
-// import legDay from '../../images/legday.jpg'
-
 import maxUpper from '../../images/max-upper.jpg'
 import maxLower from '../../images/max-lower.jpg'
 import dynamicUpper from '../../images/dynamic-upper.jpg'
@@ -30,7 +27,12 @@ const images = {
    "max-lower": maxLower,
    "dynamic-upper": dynamicUpper,
    "dynamic-lower": dynamicLower,
+
+   "hypertrophy-upper": recovery,
+   "hypertrophy-lower": recovery,
+   "full-body": recovery,
    "recovery": recovery,
+   "rest": recovery,
 }
 
 const UserTable = ({ program, saveTracking }) => {
@@ -93,12 +95,13 @@ const PhaseTable = ({ days, phase, saveTracking }) => {
       const dayUpdate = daysUpdate[dayTitle];
       dayUpdate.exercises[rowIndex] = itemUpdate;
 
-      const { exercises, title } = dayUpdate;
+      const { exercises, title, image } = dayUpdate;
       const jsonUpdate = JSON.stringify(exercises);
 
       daysUpdate[dayTitle] = {
          exercises: jsonUpdate,
-         title
+         title,
+         image
       };
 
       return saveTracking(phase, dayTitle, rowIndex, daysUpdate[dayTitle]);
@@ -114,7 +117,7 @@ const PhaseTable = ({ days, phase, saveTracking }) => {
                daysList.map((key, daysIndex) => {
                   const day = days[key];
                   const image = images[day.image];
-                  console.log(image);
+                  // console.log(image);
                   const dayCapitalized = key.charAt(0).toUpperCase() + key.substring(1) + ": " + day.title;
 
                   return (
