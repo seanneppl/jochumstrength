@@ -9,7 +9,6 @@ import * as ROUTES from '../../constants/routes';
 import useResizeWindow from '../../hooks/useResizeWindow';
 import { AuthUserContext } from '../Session';
 
-
 // import dummyUsers from '../../constants/dummyUsers';
 
 import ListGroup from 'react-bootstrap/ListGroup'
@@ -25,8 +24,7 @@ import Modal from '../Modal';
 import Loading from '../Loading';
 import { UserItem } from '../Users';
 
-
-const AdminPanel = ({ loading, usersList }) => {
+const AdminPanel = ({ loading, usersList, unread }) => {
    const [currentUser, setCurrentUser] = useState(null);
 
    return (
@@ -57,7 +55,14 @@ class UserListBase extends Component {
 
    sortUsersBy = (property) => () => {
       const { asc } = this.state;
-      const fx = (a, b) => asc ? (a[property] > b[property] ? 1 : -1) : (a[property] < b[property] ? 1 : -1);
+      const fx = (a, b) => asc ? (a[property].toLowerCase() > b[property].toLowerCase() ? 1 : -1) : (a[property].toLowerCase() < b[property].toLowerCase() ? 1 : -1);
+      const sortedUsers = this.props.usersList.sort(fx);
+      this.setState(state => ({ sortedUsers: sortedUsers, asc: !state.asc }))
+   }
+
+   sortUsersByProgramDate = () => {
+      const { asc } = this.state;
+      const fx = (a, b) => asc ? (a["programDate"] > b["programDate"] ? 1 : -1) : (a["programDate"] < b["programDate"] ? 1 : -1);
       const sortedUsers = this.props.usersList.sort(fx);
       this.setState(state => ({ sortedUsers: sortedUsers, asc: !state.asc }))
    }
@@ -106,28 +111,38 @@ class UserListBase extends Component {
    //    this.setState({groupMessage: {}}, () => console.log(this.state.groupMessage));
    // }
 
-   componentDidMount() {
-      if (this.props.match.params.id) {
-         const found = this.props.usersList.findIndex(user => user.uid === this.props.match.params.id);
-         if (found !== -1) {
-            console.log("found");
-            // console.log(this.props.usersList[found]);
-            this.props.setCurrentUser(this.props.usersList[found]);
-         } else {
-            this.props.history.push(ROUTES.ADMIN);
-            console.log("nope");
-         }
+
+
+   userFromParams = () => {
+      const found = this.props.usersList.findIndex(user => user.uid === this.props.match.params.id);
+      if (found !== -1) {
+         console.log("found");
+         // console.log(this.props.usersList[found]);
+         this.props.setCurrentUser(this.props.usersList[found]);
+      } else {
+         this.props.history.push(ROUTES.ADMIN);
+         console.log("nope");
       }
    }
 
    handleSetCurrentUser = (user) => {
-      this.props.setCurrentUser(user);
+      // this.props.setCurrentUser(user);
       this.props.history.push(`${ROUTES.ADMIN}/${user.uid}`);
    }
 
    componentDidUpdate(prevProps) {
       if (this.props.usersList.length !== prevProps.usersList.length) {
          this.setState({ sortedUsers: this.props.usersList })
+      }
+      if (this.props.match.params.id !== prevProps.match.params.id) {
+         console.log("new")
+         this.userFromParams();
+      }
+   }
+
+   componentDidMount() {
+      if (this.props.match.params) {
+         this.userFromParams();
       }
    }
 
@@ -157,7 +172,7 @@ class UserListBase extends Component {
                         <DropdownButton className="dropdown-block" id="dropdown-basic-button" title="Filter">
                            <Dropdown.Item onClick={this.sortUsersBy("username")}>Username</Dropdown.Item>
                            <Dropdown.Item onClick={this.sortUsersBy("email")}>Email</Dropdown.Item>
-                           <Dropdown.Item onClick={this.sortUsersBy("programDate")}>Program Date</Dropdown.Item>
+                           <Dropdown.Item onClick={this.sortUsersByProgramDate}>Program Date</Dropdown.Item>
                            <Dropdown.Item onClick={this.filterUsers}>Inactive</Dropdown.Item>
                            <Dropdown.Item onClick={this.showAll}>All</Dropdown.Item>
                            {sendable && <Dropdown.Item onClick={this.handleOpenMessage}>Group Message</Dropdown.Item>}
@@ -170,7 +185,7 @@ class UserListBase extends Component {
                      {sortedUsers.map(user => {
                         // {dummyUsers.map(user => {
                         const date = user.programDate ? new Date(user.programDate).toLocaleDateString("en-US") : "-";
-                        const checked = this.state.groupMessage[user.uid] ? true : false;
+                        // const checked = this.state.groupMessage[user.uid] ? true : false;
                         const current = this.props.current ? this.props.current.uid : null;
                         const currentUser = current === user.uid ? "no-border current" : "no-border";
 
@@ -194,7 +209,7 @@ class UserListBase extends Component {
                               </Link> */}
 
                               <div>{date}</div>
-                              <hr></hr>
+                              {/* <hr></hr>
                               <label>
                                  Message:
                                  <input
@@ -203,7 +218,7 @@ class UserListBase extends Component {
                                     checked={checked}
                                     onChange={this.addToGroupMessage(user)}
                                  />
-                              </label>
+                              </label> */}
                            </ListGroup.Item>
                         )
                      })}

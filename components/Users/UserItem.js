@@ -10,8 +10,7 @@ import { withFirebase } from '../Firebase';
 import WorkoutList from './WorkoutList';
 import AdminDiet from '../AdminDiet';
 import AdminWeight from '../AdminWeight';
-import { ChatRoom } from '../ChatAdmin';
-
+import ChatRoom from '../ChatAdmin';
 
 import ListGroup from 'react-bootstrap/ListGroup'
 import Button from 'react-bootstrap/Button'
@@ -66,21 +65,8 @@ const UserTabs = memo(({ tab, setTab, user, loading }) => {
 
 const MyTabs = memo(({ children, tab, setTab }) => {
 
-   // const handleSetTab = (label) => (e) => {
-   //    e.preventDefault();
-   //    setTab(label);
-   // }
-
-   // const handleChange = (e) => {
-   //    const { value } = e.target;
-   //    setTab(value);
-   // }
-
-   // console.log("MyTabs Render: ", tab)
-
    return (
       <div className="my-tabs pt-3">
-         {/* <div>{tab}</div> */}
          <nav className="d-none d-md-flex my-tabs-nav mb-3" role="tablist">
             {children.map(child => {
                const { title, label } = child.props;
@@ -185,7 +171,6 @@ const ProfileBase = ({ user, firebase }) => {
       firebase
          .activate(user.uid)
          .then(() => console.log("activated"))
-
    };
 
    const deactivateUser = () => {
