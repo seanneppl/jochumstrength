@@ -37,6 +37,7 @@ class ProgramItemBase extends Component {
             }
          ],
          showTitle: false,
+         showSave: false,
          error: null,
          ...props.location.state,
       };
@@ -118,6 +119,14 @@ class ProgramItemBase extends Component {
       this.setState({ showTitle: false });
    }
 
+   showSaveModal = () => {
+      this.setState({ showSave: true });
+   }
+
+   hideSaveModal = () => {
+      this.setState({ showSave: false });
+   }
+
    editTitle = (e) => {
       e.preventDefault();
       const title = this.titleRef.current.value.trim();
@@ -147,6 +156,95 @@ class ProgramItemBase extends Component {
          .child(phase)
          .set(phaseUpdate)
    }
+
+   clearTracking = (program) => {
+      const instruction = program.instruction;
+
+      const phasesList = Object.keys(instruction);
+
+      // Reduce program object into days
+      const tablesList = phasesList.reduce((accumulator, key) => {
+         const { completed, ...table } = instruction[key];
+         const daysListArray = Object.keys(table);
+
+         // reduce days objects back into parsed JSON
+         const daysList = daysListArray.reduce((accumulator, key) => {
+
+            const { exercises, title, image } = table[key];
+
+            const exercisesUpdate = JSON.parse(exercises).map(exercise => {
+               const exerciseUpdate = { ...exercise };
+               exerciseUpdate['tracking'] = { "week 1": "", "week 2": "", "week 3": "" }
+               return exerciseUpdate;
+            });
+
+            const day = {
+               exercises: JSON.stringify(exercisesUpdate),
+               title,
+               image
+            }
+
+            return (
+               { ...accumulator, completed: completed, [key]: day }
+            )
+         }, {});
+
+         return (
+            { ...accumulator, [key]: daysList }
+         )
+      }, {});
+
+      return tablesList;
+   }
+
+   quickSave = (e) => {
+      e.preventDefault();
+
+      const { program } = this.state;
+      const { title } = program;
+      const timestamp = this.props.firebase.serverValue.TIMESTAMP;
+
+      const programUpdate = { ...program };
+      const titleCopy = title + " copy";
+
+      const tablesList = this.clearTracking(programUpdate);
+
+      programUpdate['title'] = titleCopy;
+      programUpdate['createdAt'] = timestamp;
+      programUpdate['instruction'] = tablesList;
+
+      this.props.firebase.quickSave().set(programUpdate)
+         .then((snap) => {
+            this.props.firebase.quickSaveId().set({ title: titleCopy, createdAt: timestamp });
+            this.hideSaveModal();
+         })
+         .catch(error => this.setState({ error }));
+   }
+
+   saveToPrograms = (e) => {
+      e.preventDefault();
+      const { program } = this.state;
+      const { title } = program;
+      const timestamp = this.props.firebase.serverValue.TIMESTAMP;
+
+      const programUpdate = { ...program };
+      const titleCopy = title + " copy";
+
+      const tablesList = this.clearTracking(programUpdate);
+
+      programUpdate['title'] = titleCopy;
+      programUpdate['createdAt'] = timestamp;
+      programUpdate['instruction'] = tablesList;
+
+      this.props.firebase.programs().push(programUpdate)
+         .then((snap) => {
+            const key = snap.key;
+            this.props.firebase.programIds().update({ [key]: { title: titleCopy, createdAt: timestamp } });
+            this.hideSaveModal();
+         })
+         .catch(error => this.setState({ error }));
+   }
+
 
    setActive = (wid) => () => {
       const { workoutids } = this.state;
@@ -190,12 +288,22 @@ class ProgramItemBase extends Component {
    }
 
    render() {
-      const { program, workoutids, loading, pid, uid, tasks, error, showTitle, username } = this.state;
+      const { program, workoutids, loading, pid, uid, tasks, error, showTitle, showSave, username } = this.state;
       const title = program ? program.title : "";
       const active = workoutids ? workoutids[pid].active : false;
 
       return (
          <>
+            <Modal handleClose={this.hideSaveModal} show={showSave} heading={"Save Program?"} >
+               <div>
+                  <div className="mb-2">Save Program?</div>
+                  <div className="d-flex justify-content-between">
+                     <Button variant="success" onClick={this.saveToPrograms}>Save To Programs</Button>
+                     <Button variant="success" onClick={this.quickSave}>Quick Save</Button>
+                  </div>
+               </div>
+            </Modal>
+
             <Modal handleClose={this.hideTitleModal} show={showTitle} heading={"Change Title?"} >
                <Form onSubmit={this.editTitle}>
                   <Form.Group>
@@ -217,11 +325,13 @@ class ProgramItemBase extends Component {
                <>
                   <span className="d-flex justify-content-between align-items-center mb-2">
                      <h3 className="program-title mb-0" onClick={this.showTitleModal}>{program.title}</h3>
-
-                     {!active
-                        ? <HoverButton variant={"outline-warning"} text={"Inactive"} hoveredText={"Activate"} onClick={this.setActive(pid)} />
-                        : <HoverButton variant={"outline-success"} text={"Active"} hoveredText={"Deactivate"} onClick={this.setInactive(pid)} />
-                     }
+                     <div>
+                        {!active
+                           ? <HoverButton variant={"outline-warning"} text={"Inactive"} hoveredText={"Activate"} onClick={this.setActive(pid)} />
+                           : <HoverButton variant={"outline-success"} text={"Active"} hoveredText={"Deactivate"} onClick={this.setInactive(pid)} />
+                        }
+                        <Button className="ml-2" variant="outline-success" onClick={this.showSaveModal}>Save</Button>
+                     </div>
                   </span>
                   {username && (<Button variant="link" onClick={this.handleGoBack} className="mx-0 px-0 py-0 mb-3">{username}</Button>)}
 

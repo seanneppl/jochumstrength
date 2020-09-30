@@ -22,7 +22,21 @@
 
 ## Organize
 
-
 ## Thoughts
 1. typing autosave -> use the form valid checkmarks on save?
 1. Add last message to user object so it can be displayed in the userslist?
+
+
+## Updates
+
+UPDATE DEPENDENCIES!!!
+
+1. Deleting users: 'On the users side I know we talked about having it done, but I still don't seem to be able to do it and that's actually deleting users!'
+
+* This isn't possible without the firebase admin SDK.
+
+2. More organized user sorting: 'The active/inactive is nice (other than it seems to be flipped - active users pop up on the inactive list) but it's still getting pretty full.'
+
+* User search sort
+
+4. Programs folders: 'Finally with programs it would be awesome to create Folders so let's say all of my "back in action" programs phases 1 - 4 can be in a folder, reason for this being is the list of programs is going to get crazy long other wise!'
